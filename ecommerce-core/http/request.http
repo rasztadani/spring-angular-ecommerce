@@ -1,0 +1,13 @@
+POST http://localhost:8080/products
+Content-Type: application/json
+Accept: application/json
+
+{
+  "sku": "BOOK-TECH-2000",
+  "name": "New Book",
+  "description": "Test description",
+  "unitPrice": 39.99,
+  "imageUrl": "assets/images/products/placeholder.png",
+  "active": true,
+  "unitsInStock": 50
+}
