@@ -1,0 +1,17 @@
+import { createAction, props } from '@ngrx/store';
+import { Product } from '../../common/product';
+
+export const loadProducts = createAction(
+  '[Products] Load Products',
+  props<{ categoryId?: number; keyword?: string }>(),
+);
+
+export const loadProductsSuccess = createAction(
+  '[Products] Load Products Success',
+  props<{ products: Product[] }>(),
+);
+
+export const loadProductsFailure = createAction(
+  '[Products] Load Products Failure',
+  props<{ error: string }>(),
+);
