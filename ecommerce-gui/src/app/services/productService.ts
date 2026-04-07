@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
-import { map, Observable, tap } from 'rxjs';
-import { Product } from '../common/product';
-import { ProductCategory } from '../common/product-category';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { map, Observable } from "rxjs";
+import { Product } from "../common/product";
+import { ProductCategory } from "../common/product-category";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class ProductService {
-  private baseUrl = 'http://localhost:8080/api/products';
+  private baseUrl = "http://localhost:8080/api/products";
 
-  private categoryUrl = 'http://localhost:8080/api/product-category';
+  private categoryUrl = "http://localhost:8080/api/product-category";
 
   constructor(private httpClient: HttpClient) {}
 
@@ -19,12 +19,19 @@ export class ProductService {
     return this.getProducts(searchUrl);
   }
 
+  getProductById(theProductId: number): Observable<Product> {
+    const productUrl = `${this.baseUrl}/${theProductId}`;
+    return this.httpClient.get<Product>(productUrl);
+  }
+
   getProductCategories(): Observable<ProductCategory[]> {
-    return this.httpClient.get<GetResponseProductCategory>(this.categoryUrl).pipe(
-      map((response) => {
-        return response._embedded.productCategory;
-      }),
-    );
+    return this.httpClient
+      .get<GetResponseProductCategory>(this.categoryUrl)
+      .pipe(
+        map((response) => {
+          return response._embedded.productCategory;
+        }),
+      );
   }
 
   searchProducts(theKeyword: string): Observable<Product[]> {
@@ -33,9 +40,9 @@ export class ProductService {
   }
 
   private getProducts(searchUrl: string): Observable<Product[]> {
-    return this.httpClient.get<any>(searchUrl).pipe(
-      map((response) => response?._embedded?.products),
-    );
+    return this.httpClient
+      .get<any>(searchUrl)
+      .pipe(map((response) => response?._embedded?.products));
   }
 }
 

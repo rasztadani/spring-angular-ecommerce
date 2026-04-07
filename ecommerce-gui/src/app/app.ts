@@ -6,6 +6,7 @@ import { SearchComponent } from "./components/search/search";
 @Component({
   selector: "app-root",
   imports: [RouterOutlet, ProductCategoryMenu, SearchComponent],
+  standalone: true,
   templateUrl: "./app.html",
   styleUrl: "./app.css",
 })
