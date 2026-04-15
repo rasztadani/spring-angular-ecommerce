@@ -12,7 +12,7 @@
       }
 
       <div class="row">
-        @for (product of (products$ | async) ?? []; track product) {
+          @for (product of (products$ | async) ?? []; track product.id) {
           <div class="col-md-3">
             <div class="product-box">
                 <a routerLink="/products/{{product.id}}">
@@ -35,6 +35,34 @@
           </div>
         }
       </div>
+
+        <div class="footer-pagination">
+            <div class="row">
+                <div class="col-md-9" style="padding-left: 30%">
+                    <ngb-pagination
+                            [collectionSize]="(totalElements$ | async) ?? 0"
+                            [pageSize]="(pageSize$ | async) ?? 10"
+                            [page]="((pageNumber$ | async) ?? 0) + 1"
+                            [maxSize]="5"
+                            [boundaryLinks]="true"
+                            [ellipses]="true"
+                            (pageChange)="goToPage($event - 1)"
+                    >
+                    </ngb-pagination>
+                </div>
+                <div class="col-md-3 mt-2" style="text-align: right;">
+                    <span class="pr-4">Page Size</span>
+
+                    <select #myPageSelect (change)="changePageSize(myPageSelect.value)" )>
+                        <option selected="selected">5</option>
+                        <option>10</option>
+                        <option>20</option>
+                        <option>50</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
     </div>
   </div>
 </div>

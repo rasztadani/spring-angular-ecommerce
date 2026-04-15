@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @Entity
@@ -18,8 +16,4 @@ public class ProductCategory {
 
     @Column(name = "category_name")
     private String categoryName;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
-    private Set<Product> products;
-
 }

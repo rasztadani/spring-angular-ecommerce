@@ -1,7 +1,7 @@
 <div class="menu-sidebar-content js-scrollbar1">
   <nav class="navbar-sidebar">
     <ul class="list-unstyled navbar-list">
-      @for (category of productCategories(); track category) {
+        @for (category of productCategories(); track category.id) {
       <li>
         <a routerLink="/category/{{ category.id}}" routerLinkActive="active-link">
           {{ category.categoryName }}

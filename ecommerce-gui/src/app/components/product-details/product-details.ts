@@ -1,36 +1,37 @@
-import { Component, OnInit, signal } from "@angular/core";
-import { Product } from "../../common/product";
-import { ProductService } from "../../services/productService";
+import { Component, inject, OnInit } from "@angular/core";
 import { ActivatedRoute, RouterLink } from "@angular/router";
-import { CurrencyPipe } from "@angular/common";
+import { AsyncPipe, CurrencyPipe } from "@angular/common";
+import { Store } from "@ngrx/store";
+import {
+  selectProductsError,
+  selectProductsLoading,
+  selectSelectedProduct,
+} from "../../store/products/products.selectors";
+import { map } from "rxjs";
+import { loadProduct } from "../../store/products/products.actions";
 
 @Component({
   selector: "app-product-details",
-  imports: [CurrencyPipe, RouterLink],
+  imports: [CurrencyPipe, AsyncPipe, RouterLink],
   standalone: true,
   templateUrl: "./product-details.html",
   styleUrl: "./product-details.css",
 })
 export class ProductDetails implements OnInit {
-  product = signal<Product | undefined>(undefined);
+  private store = inject(Store);
+  private route = inject(ActivatedRoute);
 
-  constructor(
-    private productService: ProductService,
-    private route: ActivatedRoute,
-  ) {}
+  product$ = this.store.select(selectSelectedProduct);
+  loading$ = this.store.select(selectProductsLoading);
+  error$ = this.store.select(selectProductsError);
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      this.handleProductDetails();
-    });
-  }
-
-  handleProductDetails(): void {
-    const productId = Number(this.route.snapshot.paramMap.get("id"));
-    if (productId) {
-      this.productService.getProductById(productId).subscribe((product) => {
-        this.product.set(product);
+    this.route.paramMap
+      .pipe(map((params) => Number(params.get("id"))))
+      .subscribe((productId) => {
+        if (productId) {
+          this.store.dispatch(loadProduct({ productId }));
+        }
       });
-    }
   }
 }

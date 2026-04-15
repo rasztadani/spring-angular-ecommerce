@@ -1,7 +1,15 @@
 <div class="detail-section">
     <div class="container-fluid">
+        @if (loading$ | async) {
+            <div>Betöltés...</div>
+        }
 
-        @if (product(); as product) {
+        @if (error$ | async; as error) {
+            <div class="alert alert-danger">
+                {{ error }}
+            </div>
+        }
+        @if (product$ | async; as product) {
             <img [src]="product.imageUrl" alt="no images" class="detail-img"/>
 
             <h3 style="margin-top: 100px">{{ product.name }}</h3>

@@ -21,6 +21,7 @@ export class ProductCategoryMenu {
 
   listProductCategories() {
     this.productService.getProductCategories().subscribe((data) => {
+      console.log("categories:", data);
       this.productCategories.set(data);
     });
   }
